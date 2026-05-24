@@ -1,0 +1,45 @@
+# Publishes this n8n community node package to npm on every version tag push.
+# Required by n8n for verified community nodes (provenance via GitHub Actions).
+# See: https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/
+#
+# Release: run `npm run release` locally to bump version, tag, push. The tag
+# push triggers this workflow which publishes to npm with --provenance.
+#
+# npm auth: configure Trusted Publisher on npmjs.com (owner: provedit, repo:
+# n8n-nodes-provedit, workflow: publish.yml). No NPM_TOKEN secret needed.
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Release
+        run: |
+          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
