@@ -1,0 +1,66 @@
+{
+  "name": "n8n-nodes-provedit",
+  "version": "0.1.5",
+  "description": "n8n community node for Provedit. Record AI tool invocations to a tamper-evident chain, check policy decisions, and gate workflows on allow/require_approval/deny.",
+  "keywords": [
+    "n8n-community-node-package",
+    "provedit",
+    "ai",
+    "agent",
+    "audit",
+    "policy",
+    "governance",
+    "compliance"
+  ],
+  "license": "MIT",
+  "homepage": "https://provedit.ai/docs.html",
+  "author": {
+    "name": "Provedit",
+    "email": "hello@provedit.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/provedit/n8n-nodes-provedit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/provedit/n8n-nodes-provedit/issues"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.15"
+  },
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "lint": "eslint nodes credentials package.json --ext .ts",
+    "format": "prettier --write \"nodes/**/*.ts\" \"credentials/**/*.ts\"",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "index.js",
+    "LICENSE"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/ProveditApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Provedit/Provedit.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.0",
+    "gulp": "^4.0.2",
+    "jsonc-eslint-parser": "^3.1.0",
+    "n8n-workflow": "^1.82.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
